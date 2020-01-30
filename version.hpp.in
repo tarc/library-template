@@ -1,0 +1,14 @@
+#ifndef YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP 
+#define YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP
+
+namespace yet_another_template_project {
+
+  constexpr char major_version_number[] = "@MAJOR_VERSION_NUMBER@";
+
+  constexpr char minor_version_number[] = "@MINOR_VERSION_NUMBER@";
+
+  constexpr char patch_version_number[] = "@PATCH_VERSION_NUMBER@";
+
+} // namespace yet_another_template_project
+
+#endif // YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP

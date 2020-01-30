@@ -1,0 +1,85 @@
+name: Build and Unit Test
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - feature/*
+      - release/*
+
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    name: Build
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [x64]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ">= 3.5"
+
+      - name: Upgrade pip and install conan
+        run: python -m pip install --upgrade pip conan
+
+      - name: macOS build
+        if: startsWith(matrix.os, 'macOS')
+        run: ./build.sh
+        shell: bash
+
+      - name: Ubuntu build
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ./build.sh
+        shell: bash
+
+      - name: Windows build
+        if: startsWith(matrix.os, 'windows')
+        run: build.bat
+        shell: cmd
+
+  test:
+    name: Unit Test
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        platform: [x64]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ">= 3.5"
+
+      - name: Upgrade pip and install conan
+        run: python -m pip install --upgrade pip conan
+
+      - name: macOS test
+        if: startsWith(matrix.os, 'macOS')
+        run: ./test.sh
+        shell: bash
+
+      - name: Ubuntu test
+        if: startsWith(matrix.os, 'ubuntu')
+        run: ./test.sh
+        shell: bash
+
+      - name: Windows test
+        if: startsWith(matrix.os, 'windows')
+        run: test.bat
+        shell: cmd
