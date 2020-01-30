@@ -1,7 +1,3 @@
 .*.swp
 .*.swo
-/build/
-/Debug/
-/Release/
-/Multi/
-/compile_commands.json
+/tmp/

@@ -1,11 +1,13 @@
 # Enable MSVC runtime library flags
 
-if ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.12)
-else ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.15)
-  cmake_policy(SET CMP0091 NEW)
-endif ( UNIX AND NOT APPLE )
+#if ( UNIX AND NOT APPLE )
+#  cmake_minimum_required(VERSION 3.12)
+#else ( UNIX AND NOT APPLE )
+#  cmake_minimum_required(VERSION 3.15)
+#  cmake_policy(SET CMP0091 NEW)
+#endif ( UNIX AND NOT APPLE )
+
+cmake_minimum_required(VERSION 3.12)
 
 
 # Start project
@@ -15,17 +17,9 @@ set( ProjectName mulit-config-library-template )
 project( ${ProjectName} )
 
 
-# Single/Multi build setup:
+# Multi config build setup:
 
-if ( MULTI_CONFIG )
-
-  include( ${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake )
-
-else( MULTI_CONFIG )
-
-	include( ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake )
-
-endif( MULTI_CONFIG )
+include( ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake )
 
 conan_basic_setup( TARGETS )
 
@@ -85,11 +79,11 @@ include( CTest )
 add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
 
 
-# Add custom target to run binary
+#
 
-add_custom_target( run
-  COMMAND ${ProjectName}
-  DEPENDS ${ProjectName} )
+set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX _d)
+
+set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
 
 
 # Force C++17 standard
@@ -103,10 +97,10 @@ set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
 
 # Set static runtime for MSVC
 
-if ( NOT UNIX OR APPLE )
-  set_property(TARGET ${ProjectName} PROPERTY
-    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-
-  set_property(TARGET tests PROPERTY
-    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif ( NOT UNIX OR APPLE )
+#if ( NOT UNIX OR APPLE )
+#  set_property(TARGET ${ProjectName} PROPERTY
+#    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+#
+#  set_property(TARGET tests PROPERTY
+#    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+#endif ( NOT UNIX OR APPLE )

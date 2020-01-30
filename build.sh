@@ -5,17 +5,17 @@ command -v cmake >/dev/null 2>&1 || { echo >&2 "Missing cmake command"; exit 1; 
 script_dir=$(dirname "$0")
 
 if [ $# -eq 0 ]; then
-  build_type="Debug"
+  tmp="tmp"
 else
-  build_type=$1
+  tmp=$1
 fi
 
-build_dir=$script_dir/$build_type
+build_dir=$script_dir/$tmp
 
 if [ ! -d $build_dir ]; then
-  ./$script_dir/gen.sh $build_type
+  ./$script_dir/gen.sh $tmp
 fi
 
 cd $build_dir
 
-cmake --build . --config $build_type -- -j3 || exit 1
+conan build ../conanfile.py || exit 1
