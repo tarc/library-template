@@ -3,7 +3,7 @@
 
 #include "version.hpp"
 
-using namespace yet_another_template_project;
+using namespace multi_config_library_template;
 
 int main()
 {

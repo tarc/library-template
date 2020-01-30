@@ -1,7 +1,7 @@
-#ifndef YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP 
-#define YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP
+#ifndef MULTI_CONFIG_LIBRARY_TEMPLATE
+#define MULTI_CONFIG_LIBRARY_TEMPLATE
 
-namespace yet_another_template_project {
+namespace multi_config_library_template {
 
   constexpr char major_version_number[] = "@MAJOR_VERSION_NUMBER@";
 
@@ -9,6 +9,6 @@ namespace yet_another_template_project {
 
   constexpr char patch_version_number[] = "@PATCH_VERSION_NUMBER@";
 
-} // namespace yet_another_template_project
+} // namespace multi_config_library_template
 
-#endif // YET_ANOTHER_TEMPLATE_PROJECT_VERSION_HPP
+#endif // MULTI_CONFIG_LIBRARY_TEMPLATE

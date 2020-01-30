@@ -1,4 +1,4 @@
-[![Build and Test](https://github.com/tarc/yet-another-template-project/workflows/Build%20and%20Unit%20Test/badge.svg?branch=develop)](https://github.com/tarc/yet-another-template-project/actions)
+[![Build and Test](https://github.com/tarc/multi-config-library-template/workflows/Build%20and%20Unit%20Test/badge.svg?branch=develop)](https://github.com/tarc/multi-config-library-template/actions)
 
 C++ template project leveraging:
 
@@ -15,8 +15,8 @@ it is, as long as the dependencies are met:
 Bash:
 
 ```console
-git clone https://github.com/tarc/yet-another-template-project.git
-cd yet-another-template-project
+git clone https://github.com/tarc/multi-config-library-template.git
+cd multi-config-library-template
 ./test.sh
 ./run.sh
 ```
@@ -24,8 +24,8 @@ cd yet-another-template-project
 Windows Batch:
 
 ```console
-git clone https://github.com/tarc/yet-another-template-project.git
-cd yet-another-template-project
+git clone https://github.com/tarc/multi-config-library-template.git
+cd multi-config-library-template
 test.bat
 run.bat
 ```
