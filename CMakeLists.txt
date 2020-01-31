@@ -61,8 +61,8 @@ add_library( ${ProjectName}
   ${CMAKE_SOURCE_DIR}/src/utils.cpp )
 
 target_include_directories( ${ProjectName}
-  PRIVATE ${CMAKE_SOURCE_DIR}/include
-  PRIVATE ${CMAKE_CURRENT_BINARY_DIR} )
+  PUBLIC ${CMAKE_SOURCE_DIR}/include
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
 
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin
@@ -80,6 +80,9 @@ include( GoogleTest )
 include( CTest )
 
 add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
+
+target_link_libraries( tests
+  PRIVATE ${ProjectName} )
 
 
 #

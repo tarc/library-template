@@ -3,11 +3,11 @@
 
 namespace multi_config_library_template {
 
-  constexpr char major_version_number[] = "@MAJOR_VERSION_NUMBER@";
+  constexpr int major_version_number = @MAJOR_VERSION_NUMBER@;
 
-  constexpr char minor_version_number[] = "@MINOR_VERSION_NUMBER@";
+  constexpr int minor_version_number = @MINOR_VERSION_NUMBER@;
 
-  constexpr char patch_version_number[] = "@PATCH_VERSION_NUMBER@";
+  constexpr int patch_version_number = @PATCH_VERSION_NUMBER@;
 
 } // namespace multi_config_library_template
 
