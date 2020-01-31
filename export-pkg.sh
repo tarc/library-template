@@ -12,14 +12,14 @@ else
   tmp=$1
 fi
 
+
 gen_dir=$script_dir/$tmp
 
-if [ -e $gen_dir ]; then
-  rm -rf $gen_dir
+if [ ! -d $gen_dir ]; then
+  ./$script_dir/package.sh $tmp
 fi
-
-mkdir $gen_dir
 
 cd $gen_dir
 
-conan install .. --build=missing || exit 1;
+
+conan export-pkg .. -f || exit 1;

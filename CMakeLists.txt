@@ -1,13 +1,11 @@
 # Enable MSVC runtime library flags
 
-#if ( UNIX AND NOT APPLE )
-#  cmake_minimum_required(VERSION 3.12)
-#else ( UNIX AND NOT APPLE )
-#  cmake_minimum_required(VERSION 3.15)
-#  cmake_policy(SET CMP0091 NEW)
-#endif ( UNIX AND NOT APPLE )
-
-cmake_minimum_required(VERSION 3.12)
+if ( UNIX AND NOT APPLE )
+  cmake_minimum_required(VERSION 3.12)
+else ( UNIX AND NOT APPLE )
+  cmake_minimum_required(VERSION 3.15)
+  cmake_policy(SET CMP0091 NEW)
+endif ( UNIX AND NOT APPLE )
 
 
 # Start project
@@ -66,6 +64,11 @@ target_include_directories( ${ProjectName}
   PRIVATE ${CMAKE_SOURCE_DIR}/include
   PRIVATE ${CMAKE_CURRENT_BINARY_DIR} )
 
+install(TARGETS ${PROJECT_NAME}
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
+ 
 # target_link_libraries( ${ProjectName}
 #  PRIVATE CONAN_PKG::some-package )
 
@@ -97,10 +100,10 @@ set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
 
 # Set static runtime for MSVC
 
-#if ( NOT UNIX OR APPLE )
-#  set_property(TARGET ${ProjectName} PROPERTY
-#    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-#
-#  set_property(TARGET tests PROPERTY
-#    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-#endif ( NOT UNIX OR APPLE )
+if ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
+  set_property(TARGET ${ProjectName} PROPERTY
+    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+
+  set_property(TARGET tests PROPERTY
+    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+endif ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )

@@ -13,7 +13,7 @@ fi
 build_dir=$script_dir/$tmp
 
 if [ ! -d $build_dir ]; then
-  ./$script_dir/gen.sh $tmp
+  ./$script_dir/install.sh $tmp
 fi
 
 cd $build_dir

@@ -22,16 +22,22 @@ class MultiConfigLibraryTemplate(ConanFile):
         cmake = CMake(self, build_type = build_type)
 
         if self._visual_studio():
-            conan_link_runtime = cmake.definitions["CONAN_LINK_RUNTIME"]
-            cmake.defintions["CONAN_LINK_RUNTIME_MULTI"] = conan_link_runtime
             cmake.definitions["CONAN_LINK_RUNTIME"] = False
+
+            if "MD" in self.settings.compiler.runtime:
+                cmake.definitions["CONAN_MSVC_RUNTIME"] = "MultiThreaded"
+            else:
+                cmake.definitions["CONAN_MSVC_RUNTIME"] = "MultiThreadedDLL"
 
         cmake.configure()
         return cmake
 
     def package_id(self):
         if self._visual_studio():
-            self.info.settings.compiler.runtime = "MD/MDd/MT/MTd"
+            if "MD" in self.settings.compiler.runtime:
+                self.info.settings.compiler.runtime = "MD/MDd"
+            else:
+                self.info.settings.compiler.runtime = "MT/MTd"
 
     def requirements(self):
         if self._native():
@@ -54,3 +60,7 @@ class MultiConfigLibraryTemplate(ConanFile):
 
         cmake = self._configure_cmake( "Release" )
         cmake.install()
+
+    def package_info(self):
+        self.cpp_info.release.libs = [f"{self.name}"]
+        self.cpp_info.debug.libs = [f"{self.name}_d"]
