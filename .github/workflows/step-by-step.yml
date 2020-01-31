@@ -1,4 +1,4 @@
-name: Build and Unit Test
+name: Build and Package
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    name: Step by Step (MacOS and Ubuntu)
+    name: Step by Step
 
     runs-on: ${{ matrix.os }}
 
