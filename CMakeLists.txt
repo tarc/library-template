@@ -10,7 +10,7 @@ endif ( UNIX AND NOT APPLE )
 
 # Start project
 
-set( ProjectName mulit-config-library-template )
+set( ProjectName multi-config-library-template )
 
 project( ${ProjectName} )
 
