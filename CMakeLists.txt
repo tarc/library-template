@@ -57,8 +57,8 @@ configure_file ( version.hpp.in version.hpp )
 
 # Setting targets:
 
-add_executable( ${ProjectName}
-  ${CMAKE_SOURCE_DIR}/src/main.cpp )
+add_library( ${ProjectName}
+  ${CMAKE_SOURCE_DIR}/src/utils.cpp )
 
 target_include_directories( ${ProjectName}
   PRIVATE ${CMAKE_SOURCE_DIR}/include
