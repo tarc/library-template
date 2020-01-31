@@ -17,8 +17,7 @@ Bash:
 ```console
 git clone https://github.com/tarc/multi-config-library-template.git
 cd multi-config-library-template
-./test.sh
-./run.sh
+./export-pkg.sh
 ```
 
 Windows Batch:
@@ -26,6 +25,5 @@ Windows Batch:
 ```console
 git clone https://github.com/tarc/multi-config-library-template.git
 cd multi-config-library-template
-test.bat
-run.bat
+export-pkg.bat
 ```
