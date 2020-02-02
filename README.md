@@ -1,4 +1,4 @@
-[![Build and Test](https://github.com/tarc/multi-config-library-template/workflows/Build%20and%20Package/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)
+[![Build and Test](https://github.com/tarc/multi-config-library-template/workflows/Debug/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)
 
 C++ template project leveraging:
 

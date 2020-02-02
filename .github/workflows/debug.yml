@@ -1,4 +1,4 @@
-name: Build and Package
+name: Debug
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
         run: python -m pip install --upgrade pip conan
 
       - name: Install
-        run: ./install.sh
+        run: ./install.sh default ./debug.profile
         shell: bash
 
       - name: Build
@@ -47,5 +47,5 @@ jobs:
         shell: bash
 
       - name: Export Package
-        run: ./export-pkg.sh
+        run: ./export-pkg.sh default ./debug.profile
         shell: bash
