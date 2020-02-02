@@ -1,4 +1,4 @@
-|[![Debug](https://github.com/tarc/multi-config-library-template/workflows/Debug/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)|[![Release](https://github.com/tarc/multi-config-library-template/workflows/Release/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)|
+|[![Debug](https://github.com/tarc/multi-config-library-template/workflows/Debug/badge.svg?branch=develop)](https://github.com/tarc/multi-config-library-template/actions)|[![Release](https://github.com/tarc/multi-config-library-template/workflows/Release/badge.svg?branch=develop)](https://github.com/tarc/multi-config-library-template/actions)|
 |:---:|:---:|
 
 C++ template project leveraging:
