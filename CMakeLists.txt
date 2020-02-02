@@ -1,21 +1,17 @@
 # Enable MSVC runtime library flags
 
-if ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.12)
-else ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.15)
-  cmake_policy(SET CMP0091 NEW)
-endif ( UNIX AND NOT APPLE )
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0091 NEW)
 
 
 # Start project
 
-set( ProjectName mulit-config-library-template )
+set( ProjectName library-template )
 
 project( ${ProjectName} )
 
 
-# Multi config build setup:
+# Config build setup:
 
 include( ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake )
 
@@ -24,49 +20,56 @@ conan_basic_setup( TARGETS )
 
 # Versioning the project (if git can be found)
 
-find_package( Git )
+if( NOT VERSION_NUMBER )
 
-set ( MAJOR_VERSION_NUMBER "0" )
-set ( MINOR_VERSION_NUMBER "0" )
-set ( PATCH_VERSION_NUMBER "0" )
+  find_package( Git )
 
-if ( Git_FOUND )
+  if ( Git_FOUND )
 
-  message( "Git found: ${GIT_EXECUTABLE}" )
+    message( STATUS "Git found: ${GIT_EXECUTABLE}" )
 
-  execute_process( COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags --always
-    OUTPUT_VARIABLE GIT_REPO_VERSION )
+    execute_process( COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags --always
+      OUTPUT_VARIABLE GIT_REPO_VERSION )
 
-  if ( GIT_REPO_VERSION MATCHES "v([0-9]*)\\.([0-9]*)\\.([0-9]*)" )
-    message( "Parsing version: ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}" )
+    if ( GIT_REPO_VERSION MATCHES "v([0-9]*)\\.([0-9]*)\\.([0-9]*)" )
+      message( STATUS
+        "Parsing version: ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}" )
 
-    set ( MAJOR_VERSION_NUMBER ${CMAKE_MATCH_1} )
-    set ( MINOR_VERSION_NUMBER ${CMAKE_MATCH_2} )
-    set ( PATCH_VERSION_NUMBER ${CMAKE_MATCH_3} )
+      set ( MAJOR_VERSION_NUMBER ${CMAKE_MATCH_1} )
+      set ( MINOR_VERSION_NUMBER ${CMAKE_MATCH_2} )
+      set ( PATCH_VERSION_NUMBER ${CMAKE_MATCH_3} )
 
-  else ( )
+    else ( )
 
-    message( "Could not extract version from: ${GIT_REPO_VERSION}" )
+      message( STATUS "Could not extract version from: ${GIT_REPO_VERSION}" )
+
+    endif ( )
 
   endif ( )
 
+  configure_file ( version.hpp.in version.hpp )
+else ( )
+  message( STATUS "Configured with version: ${VERSION_NUMBER}" )
+  message( STATUS
+    "Version numbers: ${MAJOR_VERSION_NUMBER}.${MINOR_VERSION_NUMBER}.${PATCH_VERSION_NUMBER}" )
 endif ( )
-
-configure_file ( version.hpp.in version.hpp )
 
 
 # Setting targets:
 
-add_executable( ${ProjectName}
-  ${CMAKE_SOURCE_DIR}/src/main.cpp )
+add_library( ${ProjectName}
+  ${CMAKE_SOURCE_DIR}/src/utils.cpp )
 
 target_include_directories( ${ProjectName}
-  PRIVATE ${CMAKE_SOURCE_DIR}/include
-  PRIVATE ${CMAKE_CURRENT_BINARY_DIR} )
+  PUBLIC ${CMAKE_SOURCE_DIR}/include
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
+
+set_target_properties( ${ProjectName} PROPERTIES PUBLIC_HEADER "include/utils.hpp")
 
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
+  PUBLIC_HEADER DESTINATION include
   ARCHIVE DESTINATION lib)
  
 # target_link_libraries( ${ProjectName}
@@ -75,18 +78,29 @@ install(TARGETS ${PROJECT_NAME}
 
 # Setting tests
 
-include( GoogleTest )
+if(CMAKE_CROSSCOMPILING)
+  message(STATUS "Skipping unit tests (Cross-compiling)")
+else()
+  message(STATUS "Enable unit tests")
 
-include( CTest )
+  include( GoogleTest )
 
-add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
+  include( CTest )
+
+  add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
+
+  target_link_libraries( tests
+    PRIVATE ${ProjectName} )
+endif()
 
 
-#
+# Set debug suffix
 
 set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX _d)
 
-set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
+if(NOT CMAKE_CROSSCOMPILING)
+  set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
+endif()
 
 
 # Force C++17 standard
@@ -94,16 +108,20 @@ set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
 set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD 17 )
 set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD_REQUIRED ON )
 
-set_property ( TARGET tests PROPERTY CXX_STANDARD 17 )
-set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
+if(NOT CMAKE_CROSSCOMPILING)
+  set_property ( TARGET tests PROPERTY CXX_STANDARD 17 )
+  set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
+endif()
 
 
 # Set static runtime for MSVC
 
 if ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   set_property(TARGET ${ProjectName} PROPERTY
-    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+    MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
 
-  set_property(TARGET tests PROPERTY
-    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+  if(NOT CMAKE_CROSSCOMPILING)
+    set_property(TARGET tests PROPERTY
+      MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+  endif()
 endif ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )

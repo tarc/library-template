@@ -1,4 +1,5 @@
-[![Build and Test](https://github.com/tarc/multi-config-library-template/workflows/Build%20and%20Unit%20Test/badge.svg?branch=develop)](https://github.com/tarc/multi-config-library-template/actions)
+|[![Debug](https://github.com/tarc/library-template/workflows/Debug/badge.svg?branch=develop)](https://github.com/tarc/library-template/actions)|[![Release](https://github.com/tarc/library-template/workflows/Release/badge.svg?branch=develop)](https://github.com/tarc/library-template/actions)|
+|:---:|:---:|
 
 C++ template project leveraging:
 
@@ -15,17 +16,15 @@ it is, as long as the dependencies are met:
 Bash:
 
 ```console
-git clone https://github.com/tarc/multi-config-library-template.git
-cd multi-config-library-template
-./test.sh
-./run.sh
+git clone https://github.com/tarc/library-template.git
+cd library-template
+./export-pkg.sh
 ```
 
 Windows Batch:
 
 ```console
-git clone https://github.com/tarc/multi-config-library-template.git
-cd multi-config-library-template
-test.bat
-run.bat
+git clone https://github.com/tarc/library-template.git
+cd library-template
+export-pkg.bat
 ```

@@ -2,37 +2,38 @@
 setlocal enabledelayedexpansion
 
 
+set error_message=trying conan
+where conan > NUL 2> NUL
+if NOT '%ERRORLEVEL%'=='0' goto fail
+
+
 set error_message=trying cmake
 where cmake > NUL 2> NUL
 if NOT '%ERRORLEVEL%'=='0' goto fail
 
 
 if NOT "%1"=="" (
-	set build_type=%1
+	set tmp=%1
 ) else (
-	set build_type=Debug
+	set tmp=tmp
 )
 
 
 set script_dir=%~dp0
 
-set build_dir=%script_dir%Multi\
+set gen_dir=%script_dir%%tmp%\
 
-for %%I in (.) do set project_name=%%~nxI
+if EXIST %gen_dir% (
+	set error_message=calling install
 
-set solution=%project_name%.sln
-
-if NOT EXIST %build_dir%%solution% (
-	set error_message=calling generate
-
-	call %script_dir%gen.bat %build_type%
+	call %script_dir%install.bat %tmp%
 	if NOT '!ERRORLEVEL!'=='0' goto fail
 )
 
 
-cd %build_dir%
+cd %gen_dir%
 set error_message=building
-cmake --build . --config %build_type% -- /m
+conan build ..\conanfile.py
 if NOT '!ERRORLEVEL!'=='0' goto fail
 
 
