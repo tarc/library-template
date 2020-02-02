@@ -1,7 +1,7 @@
-#ifndef MULTI_CONFIG_LIBRARY_TEMPLATE_VERSION_HPP
-#define MULTI_CONFIG_LIBRARY_TEMPLATE_VERSION_HPP
+#ifndef LIBRARY_TEMPLATE_VERSION_HPP
+#define LIBRARY_TEMPLATE_VERSION_HPP
 
-namespace multi_config_library_template {
+namespace library_template {
 
   constexpr int major_version_number = @MAJOR_VERSION_NUMBER@;
 
@@ -9,6 +9,6 @@ namespace multi_config_library_template {
 
   constexpr int patch_version_number = @PATCH_VERSION_NUMBER@;
 
-} // namespace multi_config_library_template
+} // namespace library_template
 
-#endif // MULTI_CONFIG_LIBRARY_TEMPLATE_VERSION_HPP
+#endif // LIBRARY_TEMPLATE_VERSION_HPP

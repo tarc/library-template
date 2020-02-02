@@ -6,7 +6,7 @@ cmake_policy(SET CMP0091 NEW)
 
 # Start project
 
-set( ProjectName multi-config-library-template )
+set( ProjectName library-template )
 
 project( ${ProjectName} )
 

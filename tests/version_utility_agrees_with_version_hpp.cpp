@@ -6,7 +6,7 @@
 
 TEST( VersionUtilityAgreeWithVersionHPP , Pass )
 {
-  using namespace multi_config_library_template;
+  using namespace library_template;
 
   const std::string version_lib( version() );
 

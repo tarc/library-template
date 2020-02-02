@@ -3,11 +3,11 @@
 #include "utils.hpp"
 #include "version.hpp"
 
-namespace multi_config_library_template {
+namespace library_template {
 
   std::string version()
   {
-    using namespace multi_config_library_template;
+    using namespace library_template;
 
     std::ostringstream ss;
 
@@ -18,4 +18,4 @@ namespace multi_config_library_template {
     return ss.str();
   }
 
-} // namespace multi_config_library_template
+} // namespace library_template

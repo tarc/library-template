@@ -3,11 +3,11 @@ import os
 import subprocess
 
 
-class MultiConfigLibraryTemplateTest(ConanFile):
+class LibraryTemplateTest(ConanFile):
     generators = "cmake"
 
     def requirements(self):
-        self.requires("multi-config-library-template/0.0.1")
+        self.requires("library-template/0.0.1")
 
     def build(self):
         cmake = CMake(self)

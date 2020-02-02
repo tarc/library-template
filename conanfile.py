@@ -1,12 +1,12 @@
 from conans import ConanFile, CMake, tools
 
 
-class MultiConfigLibraryTemplate(ConanFile):
-    name = "multi-config-library-template"
+class LibraryTemplate(ConanFile):
+    name = "library-template"
     version = "0.0.1"
-    description = "Multi Config Library Template"
+    description = "Library Template"
     license = "MIT"
-    url = "https://github.com/tarc/multi-config-library-template"
+    url = "https://github.com/tarc/library-template"
 
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
@@ -40,6 +40,6 @@ class MultiConfigLibraryTemplate(ConanFile):
 
     def package_info(self):
         if self.settings.build_type == "Release":
-            self.cpp_info.libs = ["libmulti-config-library-template.a"]
+            self.cpp_info.libs = ["liblibrary-template.a"]
         else:
-            self.cpp_info.libs = ["libmulti-config-library-template_d.a"]
+            self.cpp_info.libs = ["liblibrary-template_d.a"]
