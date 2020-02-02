@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class LibraryTemplate(ConanFile):
     name = "library-template"
-    version = "0.0.1"
+    version = "1.0.0"
     description = "Library Template"
     license = "MIT"
     url = "https://github.com/tarc/library-template"

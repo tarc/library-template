@@ -11,7 +11,7 @@ set( ProjectName library-template )
 project( ${ProjectName} )
 
 
-# Multi config build setup:
+# Config build setup:
 
 include( ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake )
 
