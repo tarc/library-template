@@ -33,7 +33,7 @@ class LibraryTemplate(ConanFile):
         return cmake
 
     def set_version(self):
-        (self.version, self._minor, self._major, self._patch) = version.version()
+        (self.version, self._major, self._minor, self._patch) = version.version()
         version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
                 "library_template", self._major, self._minor, self._patch)
 
