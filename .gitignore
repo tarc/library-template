@@ -2,3 +2,4 @@
 .*.swo
 /tmp/
 /test_package/build/
+/version.hpp

@@ -1,15 +1,10 @@
 from conans import ConanFile, CMake, tools
-from version import version
 import os
 import subprocess
 
 
 class LibraryTemplateTest(ConanFile):
     generators = "cmake"
-
-    def requirements(self):
-        version = version()
-        self.requires("library-template/1.0.0")
 
     def build(self):
         cmake = CMake(self)

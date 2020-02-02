@@ -1,16 +1,21 @@
 from conans import ConanFile, CMake, tools
+import version
 
 
 class LibraryTemplate(ConanFile):
     name = "library-template"
-    version = "1.0.0"
     description = "Library Template"
     license = "MIT"
     url = "https://github.com/tarc/library-template"
 
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
-    exports_sources = "CMakeLists.txt", "src/*.cpp", "include/*.hpp", "version.hpp.in", "tests/CMakeLists.txt", "tests/*.cpp"
+    exports = "version.py"
+    exports_sources = "CMakeLists.txt", "src/*.cpp", "include/*.hpp", "version.hpp", "tests/CMakeLists.txt", "tests/*.cpp"
+    
+    _minor = 0
+    _major = 0
+    _patch = 0
 
     def _native(self):
         return not tools.cross_building(self.settings)
@@ -20,9 +25,17 @@ class LibraryTemplate(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
+        cmake.definitions["VERSION_NUMBER"] = self.version
+        cmake.definitions["MAJOR_VERSION_NUMBER"] = self._major
+        cmake.definitions["MINOR_VERSION_NUMBER"] = self._minor
+        cmake.definitions["PATCH_VERSION_NUMBER"] = self._patch
         cmake.configure()
-        cmake.verbose = True
         return cmake
+
+    def set_version(self):
+        (self.version, self._minor, self._major, self._patch) = version.version()
+        version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
+                "library_template", self._major, self._minor, self._patch)
 
     def requirements(self):
         if self._native():
