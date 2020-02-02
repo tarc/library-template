@@ -13,7 +13,7 @@ tmp="tmp"
 build_dir=$script_dir/$tmp
 
 if [ ! -d $build_dir ]; then
-  ./$script_dir/install.sh $tmp
+  ./$script_dir/install.sh "$@"
 fi
 
 cd $build_dir

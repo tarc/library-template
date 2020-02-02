@@ -13,7 +13,7 @@ tmp="tmp"
 gen_dir=$script_dir/$tmp
 
 if [ ! -d $gen_dir ]; then
-  ./$script_dir/build.sh $tmp
+  ./$script_dir/build.sh "$@"
 fi
 
 cd $gen_dir
