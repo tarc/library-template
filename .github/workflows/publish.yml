@@ -1,10 +1,9 @@
 name: Publish
 
 on:
-  push:
-    branches:
-      - hotfix/*
-      - master
+  create:
+    tags:
+      - v*.*.*
 
 jobs:
   build:
@@ -29,6 +28,15 @@ jobs:
         run: conan user -p $APIKEY -r tarc tarc
         env:
           APIKEY: ${{ secrets.APIKEY }}
+
+      - name: Set tag
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF:10}
+
+      - name: Dump tag
+        env:
+          GIT_TAG: ${{ steps.vars.outputs.tag }}
+        run: echo $GIT_TAG
 
       - name: Create
         run: conan create . -pr default -pr ./release.profile -pr cxx11abi.profile
