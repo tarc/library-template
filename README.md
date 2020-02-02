@@ -1,4 +1,5 @@
-[![Build and Test](https://github.com/tarc/multi-config-library-template/workflows/Build%20and%20Unit%20Test/badge.svg?branch=develop)](https://github.com/tarc/multi-config-library-template/actions)
+|[![Debug](https://github.com/tarc/multi-config-library-template/workflows/Debug/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)|[![Release](https://github.com/tarc/multi-config-library-template/workflows/Release/badge.svg?branch=feature/AddLibrary)](https://github.com/tarc/multi-config-library-template/actions)|
+|:---:|:---:|
 
 C++ template project leveraging:
 
@@ -17,8 +18,7 @@ Bash:
 ```console
 git clone https://github.com/tarc/multi-config-library-template.git
 cd multi-config-library-template
-./test.sh
-./run.sh
+./export-pkg.sh
 ```
 
 Windows Batch:
@@ -26,6 +26,5 @@ Windows Batch:
 ```console
 git clone https://github.com/tarc/multi-config-library-template.git
 cd multi-config-library-template
-test.bat
-run.bat
+export-pkg.bat
 ```

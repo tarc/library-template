@@ -1,16 +1,12 @@
 # Enable MSVC runtime library flags
 
-if ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.12)
-else ( UNIX AND NOT APPLE )
-  cmake_minimum_required(VERSION 3.15)
-  cmake_policy(SET CMP0091 NEW)
-endif ( UNIX AND NOT APPLE )
+cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0091 NEW)
 
 
 # Start project
 
-set( ProjectName mulit-config-library-template )
+set( ProjectName multi-config-library-template )
 
 project( ${ProjectName} )
 
@@ -57,16 +53,19 @@ configure_file ( version.hpp.in version.hpp )
 
 # Setting targets:
 
-add_executable( ${ProjectName}
-  ${CMAKE_SOURCE_DIR}/src/main.cpp )
+add_library( ${ProjectName}
+  ${CMAKE_SOURCE_DIR}/src/utils.cpp )
 
 target_include_directories( ${ProjectName}
-  PRIVATE ${CMAKE_SOURCE_DIR}/include
-  PRIVATE ${CMAKE_CURRENT_BINARY_DIR} )
+  PUBLIC ${CMAKE_SOURCE_DIR}/include
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
+
+set_target_properties( ${ProjectName} PROPERTIES PUBLIC_HEADER "include/utils.hpp")
 
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
+  PUBLIC_HEADER DESTINATION include
   ARCHIVE DESTINATION lib)
  
 # target_link_libraries( ${ProjectName}
@@ -81,8 +80,11 @@ include( CTest )
 
 add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
 
+target_link_libraries( tests
+  PRIVATE ${ProjectName} )
 
-#
+
+# Set debug suffix
 
 set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX _d)
 
@@ -102,8 +104,8 @@ set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
 
 if ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   set_property(TARGET ${ProjectName} PROPERTY
-    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+    MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
 
   set_property(TARGET tests PROPERTY
-    MSVC_RUNTIME_LIBRARY "${CONAN_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+    MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
 endif ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )

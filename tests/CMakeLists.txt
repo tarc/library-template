@@ -7,6 +7,7 @@ target_include_directories( tests
 
 
 target_link_libraries( tests
-  PRIVATE CONAN_PKG::gtest )
+  PRIVATE CONAN_PKG::gtest
+  PRIVATE ${ProjectName})
 
 gtest_discover_tests( tests EXTRA_ARGS --gtest_output=xml:report.xml )
