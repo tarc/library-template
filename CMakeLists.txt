@@ -74,21 +74,29 @@ install(TARGETS ${PROJECT_NAME}
 
 # Setting tests
 
-include( GoogleTest )
+if(CMAKE_CROSSCOMPILING)
+  message(STATUS "Skipping unit tests (Cross-compiling)")
+else()
+  message(STATUS "Enable unit tests")
 
-include( CTest )
+  include( GoogleTest )
 
-add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
+  include( CTest )
 
-target_link_libraries( tests
-  PRIVATE ${ProjectName} )
+  add_subdirectory( ${CMAKE_SOURCE_DIR}/tests )
+
+  target_link_libraries( tests
+    PRIVATE ${ProjectName} )
+endif()
 
 
 # Set debug suffix
 
 set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX _d)
 
-set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
+if(NOT CMAKE_CROSSCOMPILING)
+  set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
+endif()
 
 
 # Force C++17 standard
@@ -96,8 +104,10 @@ set_target_properties(tests PROPERTIES DEBUG_POSTFIX _d)
 set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD 17 )
 set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD_REQUIRED ON )
 
-set_property ( TARGET tests PROPERTY CXX_STANDARD 17 )
-set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
+if(NOT CMAKE_CROSSCOMPILING)
+  set_property ( TARGET tests PROPERTY CXX_STANDARD 17 )
+  set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
+endif()
 
 
 # Set static runtime for MSVC
@@ -106,6 +116,8 @@ if ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
   set_property(TARGET ${ProjectName} PROPERTY
     MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
 
-  set_property(TARGET tests PROPERTY
-    MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+  if(NOT CMAKE_CROSSCOMPILING)
+    set_property(TARGET tests PROPERTY
+      MSVC_RUNTIME_LIBRARY "${CONAN_MSVC_RUNTIME}$<$<CONFIG:Debug>:Debug>")
+  endif()
 endif ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )
