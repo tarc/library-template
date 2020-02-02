@@ -1,4 +1,4 @@
-|[![Debug](https://github.com/tarc/library-template/workflows/Debug/badge.svg?branch=develop)](https://github.com/tarc/library-template/actions)|[![Release](https://github.com/tarc/library-template/workflows/Release/badge.svg?branch=develop)](https://github.com/tarc/library-template/actions)|
+|[![Debug](https://github.com/tarc/library-template/workflows/Debug/badge.svg?branch=master)](https://github.com/tarc/library-template/actions)|[![Release](https://github.com/tarc/library-template/workflows/Release/badge.svg?branch=master)](https://github.com/tarc/library-template/actions)|
 |:---:|:---:|
 
 C++ template project leveraging:
