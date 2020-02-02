@@ -1,5 +1,5 @@
 from conans import ConanFile, CMake, tools
-import version
+import version, os, re
 
 
 class LibraryTemplate(ConanFile):
@@ -33,9 +33,22 @@ class LibraryTemplate(ConanFile):
         return cmake
 
     def set_version(self):
-        (self.version, self._major, self._minor, self._patch) = version.version()
-        version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
-                "library_template", self._major, self._minor, self._patch)
+        git_tag = os.environ.get("GIT_TAG")
+        if not git_tag:
+            (self.version, self._major, self._minor, self._patch) = version.version()
+            version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
+                    "library_template", self._major, self._minor, self._patch)
+        else:
+            (self.version, self._major, self._minor, self._patch) = ("0.0.0", "0", "0", "0")
+
+            m = re.search("v(([0-9]*)\\.([0-9]*)\\.([0-9]*))", git_tag)
+
+            if m:
+                (self.version, self._major, self._minor, self._patch) = (
+                        m.group(1), m.group(2), m.group(3), m.group(4))
+
+            version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
+                    "library_template", self._major, self._minor, self._patch)
 
     def requirements(self):
         if self._native():

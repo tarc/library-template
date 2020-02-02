@@ -29,17 +29,19 @@ jobs:
         env:
           APIKEY: ${{ secrets.APIKEY }}
 
-      - name: Set tag
+      - name: Set version tag
         id: vars
         run: echo ::set-output name=tag::${GITHUB_REF:10}
 
-      - name: Dump tag
+      - name: Show version tag
+        run: echo $GIT_TAG
         env:
           GIT_TAG: ${{ steps.vars.outputs.tag }}
-        run: echo $GIT_TAG
 
       - name: Create
         run: conan create . -pr default -pr ./release.profile -pr cxx11abi.profile
+        env:
+          GIT_TAG: ${{ steps.vars.outputs.tag }}
         shell: bash
 
       - name: Publish
