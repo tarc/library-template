@@ -11,7 +11,7 @@ set( ProjectName library-template )
 project( ${ProjectName} )
 
 
-# Multi config build setup:
+# Config build setup:
 
 include( ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake )
 
@@ -20,35 +20,39 @@ conan_basic_setup( TARGETS )
 
 # Versioning the project (if git can be found)
 
-find_package( Git )
+if( NOT VERSION_NUMBER )
 
-set ( MAJOR_VERSION_NUMBER "0" )
-set ( MINOR_VERSION_NUMBER "0" )
-set ( PATCH_VERSION_NUMBER "0" )
+  find_package( Git )
 
-if ( Git_FOUND )
+  if ( Git_FOUND )
 
-  message( "Git found: ${GIT_EXECUTABLE}" )
+    message( STATUS "Git found: ${GIT_EXECUTABLE}" )
 
-  execute_process( COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags --always
-    OUTPUT_VARIABLE GIT_REPO_VERSION )
+    execute_process( COMMAND ${GIT_EXECUTABLE} describe --abbrev=0 --tags --always
+      OUTPUT_VARIABLE GIT_REPO_VERSION )
 
-  if ( GIT_REPO_VERSION MATCHES "v([0-9]*)\\.([0-9]*)\\.([0-9]*)" )
-    message( "Parsing version: ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}" )
+    if ( GIT_REPO_VERSION MATCHES "v([0-9]*)\\.([0-9]*)\\.([0-9]*)" )
+      message( STATUS
+        "Parsing version: ${CMAKE_MATCH_1}.${CMAKE_MATCH_2}.${CMAKE_MATCH_3}" )
 
-    set ( MAJOR_VERSION_NUMBER ${CMAKE_MATCH_1} )
-    set ( MINOR_VERSION_NUMBER ${CMAKE_MATCH_2} )
-    set ( PATCH_VERSION_NUMBER ${CMAKE_MATCH_3} )
+      set ( MAJOR_VERSION_NUMBER ${CMAKE_MATCH_1} )
+      set ( MINOR_VERSION_NUMBER ${CMAKE_MATCH_2} )
+      set ( PATCH_VERSION_NUMBER ${CMAKE_MATCH_3} )
 
-  else ( )
+    else ( )
 
-    message( "Could not extract version from: ${GIT_REPO_VERSION}" )
+      message( STATUS "Could not extract version from: ${GIT_REPO_VERSION}" )
+
+    endif ( )
 
   endif ( )
 
+  configure_file ( version.hpp.in version.hpp )
+else ( )
+  message( STATUS "Configured with version: ${VERSION_NUMBER}" )
+  message( STATUS
+    "Version numbers: ${MAJOR_VERSION_NUMBER}.${MINOR_VERSION_NUMBER}.${PATCH_VERSION_NUMBER}" )
 endif ( )
-
-configure_file ( version.hpp.in version.hpp )
 
 
 # Setting targets:
