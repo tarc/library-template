@@ -8,7 +8,7 @@ class MultiConfigLibraryTemplate(ConanFile):
     license = "MIT"
     url = "https://github.com/tarc/multi-config-library-template"
 
-    settings = "os", "compiler", "arch"
+    settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "CMakeLists.txt", "src/*.cpp", "include/*.hpp", "version.hpp.in"
 
@@ -18,49 +18,27 @@ class MultiConfigLibraryTemplate(ConanFile):
     def _visual_studio(self):
         return self.settings.compiler == "Visual Studio"
 
-    def _configure_cmake(self, build_type):
-        cmake = CMake(self, build_type = build_type)
-
-        if self._visual_studio():
-            cmake.definitions["CONAN_LINK_RUNTIME"] = False
-
-            if "MD" in self.settings.compiler.runtime:
-                cmake.definitions["CONAN_MSVC_RUNTIME"] = "MultiThreaded"
-            else:
-                cmake.definitions["CONAN_MSVC_RUNTIME"] = "MultiThreadedDLL"
-
+    def _configure_cmake(self):
+        cmake = CMake(self)
         cmake.configure()
         return cmake
-
-    def package_id(self):
-        if self._visual_studio():
-            if "MD" in self.settings.compiler.runtime:
-                self.info.settings.compiler.runtime = "MD/MDd"
-            else:
-                self.info.settings.compiler.runtime = "MT/MTd"
 
     def requirements(self):
         if self._native():
             self.requires("gtest/1.8.1@bincrafters/stable")
 
     def build(self):
-        cmake = self._configure_cmake( "Debug" )
-        cmake.build()
-        if self._native():
-            cmake.test()
-
-        cmake = self._configure_cmake( "Release" )
+        cmake = self._configure_cmake()
         cmake.build()
         if self._native():
             cmake.test()
 
     def package(self):
-        cmake = self._configure_cmake( "Debug" )
-        cmake.install()
-
-        cmake = self._configure_cmake( "Release" )
+        cmake = self._configure_cmake()
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.release.libs = [f"{self.name}"]
-        self.cpp_info.debug.libs = [f"{self.name}_d"]
+        if self.settings.build_type == "Release":
+            self.cpp_info.release.libs = [f"{self.name}"]
+        else:
+            self.cpp_info.debug.libs = [f"{self.name}_d"]

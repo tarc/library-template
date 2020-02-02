@@ -81,7 +81,7 @@ target_link_libraries( tests
   PRIVATE ${ProjectName} )
 
 
-#
+# Set debug suffix
 
 set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX _d)
 

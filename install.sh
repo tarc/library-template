@@ -1,16 +1,14 @@
 #!/bin/bash
 
+source ./utils.sh
+
 command -v conan >/dev/null 2>&1 || { echo >&2 "Missing conan command"; exit 1; }
 
 command -v cmake >/dev/null 2>&1 || { echo >&2 "Missing cmake command"; exit 1; }
 
 script_dir=$(dirname "$0")
 
-if [ $# -eq 0 ]; then
-  tmp="tmp"
-else
-  tmp=$1
-fi
+tmp="tmp"
 
 gen_dir=$script_dir/$tmp
 
@@ -22,4 +20,7 @@ mkdir $gen_dir
 
 cd $gen_dir
 
-conan install .. --build=missing || exit 1;
+
+compute_profile_option "$@"
+
+conan install .. $profile_option --build=missing || exit 1;
