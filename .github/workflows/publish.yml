@@ -34,5 +34,5 @@ jobs:
         shell: bash
 
       - name: Publish
-        run: conan upload library-template/1.0.0 -r tarc --all --confirm
+        run: conan upload library-template/* -r tarc --all --confirm
         shell: bash
