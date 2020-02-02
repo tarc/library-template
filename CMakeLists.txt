@@ -60,9 +60,12 @@ target_include_directories( ${ProjectName}
   PUBLIC ${CMAKE_SOURCE_DIR}/include
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} )
 
+set_target_properties( ${ProjectName} PROPERTIES PUBLIC_HEADER "include/utils.hpp")
+
 install(TARGETS ${PROJECT_NAME}
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
+  PUBLIC_HEADER DESTINATION include
   ARCHIVE DESTINATION lib)
  
 # target_link_libraries( ${ProjectName}

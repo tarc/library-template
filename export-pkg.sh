@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./utils.sh
+
 command -v conan >/dev/null 2>&1 || { echo >&2 "Missing conan command"; exit 1; }
 
 command -v cmake >/dev/null 2>&1 || { echo >&2 "Missing cmake command"; exit 1; }

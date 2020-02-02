@@ -10,7 +10,7 @@ class MultiConfigLibraryTemplate(ConanFile):
 
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
-    exports_sources = "CMakeLists.txt", "src/*.cpp", "include/*.hpp", "version.hpp.in"
+    exports_sources = "CMakeLists.txt", "src/*.cpp", "include/*.hpp", "version.hpp.in", "tests/CMakeLists.txt", "tests/*.cpp"
 
     def _native(self):
         return not tools.cross_building(self.settings)
@@ -21,6 +21,7 @@ class MultiConfigLibraryTemplate(ConanFile):
     def _configure_cmake(self):
         cmake = CMake(self)
         cmake.configure()
+        cmake.verbose = True
         return cmake
 
     def requirements(self):
@@ -39,6 +40,6 @@ class MultiConfigLibraryTemplate(ConanFile):
 
     def package_info(self):
         if self.settings.build_type == "Release":
-            self.cpp_info.release.libs = [f"{self.name}"]
+            self.cpp_info.libs = ["libmulti-config-library-template.a"]
         else:
-            self.cpp_info.debug.libs = [f"{self.name}_d"]
+            self.cpp_info.libs = ["libmulti-config-library-template_d.a"]
