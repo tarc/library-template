@@ -35,7 +35,7 @@ jobs:
         run: python -m pip install --upgrade pip conan gitpython
 
       - name: Install
-        run: ./install.sh default ./debug.profile
+        run: ./install.sh default ./profiles/debug.profile
         shell: bash
 
       - name: Build
@@ -47,5 +47,5 @@ jobs:
         shell: bash
 
       - name: Export Package
-        run: ./export-pkg.sh default ./debug.profile
+        run: ./export-pkg.sh default ./profiles/debug.profile
         shell: bash
