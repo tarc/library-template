@@ -103,17 +103,6 @@ if(NOT CMAKE_CROSSCOMPILING)
 endif()
 
 
-# Force C++17 standard
-
-set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD 17 )
-set_property ( TARGET ${ProjectName} PROPERTY CXX_STANDARD_REQUIRED ON )
-
-if(NOT CMAKE_CROSSCOMPILING)
-  set_property ( TARGET tests PROPERTY CXX_STANDARD 17 )
-  set_property ( TARGET tests PROPERTY CXX_STANDARD_REQUIRED ON )
-endif()
-
-
 # Set static runtime for MSVC
 
 if ( CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" )

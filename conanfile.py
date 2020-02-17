@@ -36,8 +36,6 @@ class LibraryTemplate(ConanFile):
         git_tag = os.environ.get("GIT_TAG")
         if not git_tag:
             (self.version, self._major, self._minor, self._patch) = version.version()
-            version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
-                    "library_template", self._major, self._minor, self._patch)
         else:
             (self.version, self._major, self._minor, self._patch) = ("0.0.0", "0", "0", "0")
 
@@ -47,8 +45,8 @@ class LibraryTemplate(ConanFile):
                 (self.version, self._major, self._minor, self._patch) = (
                         m.group(1), m.group(2), m.group(3), m.group(4))
 
-            version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
-                    "library_template", self._major, self._minor, self._patch)
+        version.write_version_header("version.hpp", "LIBRARY_TEMPLATE_VERSION_HPP",
+                "library_template", self._major, self._minor, self._patch)
 
     def requirements(self):
         if self._native():

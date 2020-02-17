@@ -1,9 +1,9 @@
 name: Publish
 
 on:
-  create:
+  push:
     tags:
-      - v*.*.*
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -39,7 +39,7 @@ jobs:
           GIT_TAG: ${{ steps.vars.outputs.tag }}
 
       - name: Create
-        run: conan create . -pr default -pr ./profiles/release.profile -pr ./profiles/cxx11abi.profile
+        run: conan create . -pr default -pr ./profiles/release.profile -pr ./profiles/cxx11abi.profile ./profiles/cxx17.profile
         env:
           GIT_TAG: ${{ steps.vars.outputs.tag }}
         shell: bash
