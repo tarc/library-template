@@ -34,9 +34,16 @@ jobs:
       - name: Upgrade pip and install conan
         run: python -m pip install --upgrade pip conan gitpython
 
-      - name: Install
+      - name: Install Windows
+        run: |
+          ./install.sh default ./profiles/debug.profile ./profiles/cxx17.profile ./profiles/debug-static-rt.profile
+        shell: bash
+        if: matrix.os == 'windows-latest'
+
+      - name: Install Unixes
         run: ./install.sh default ./profiles/debug.profile ./profiles/cxx17.profile
         shell: bash
+        if: matrix.os != 'windows-latest'
 
       - name: Build
         run: ./build.sh
@@ -46,6 +53,13 @@ jobs:
         run: ./package.sh
         shell: bash
 
-      - name: Export Package
+      - name: Export Package Windows
+        run: |
+          ./export-pkg.sh default ./profiles/debug.profile ./profiles/cxx17.profile ./profiles/debug-static-rt.profile
+        shell: bash
+        if: matrix.os == 'windows-latest'
+
+      - name: Export Package Unixes
         run: ./export-pkg.sh default ./profiles/debug.profile ./profiles/cxx17.profile
         shell: bash
+        if: matrix.os != 'windows-latest'

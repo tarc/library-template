@@ -1,5 +1,7 @@
 from conans import ConanFile, CMake, tools
 import version, os, re
+import importlib
+convert_runtime_names = importlib.import_module("convert-runtime-names")
 
 
 class LibraryTemplate(ConanFile):
@@ -29,6 +31,11 @@ class LibraryTemplate(ConanFile):
         cmake.definitions["MAJOR_VERSION_NUMBER"] = self._major
         cmake.definitions["MINOR_VERSION_NUMBER"] = self._minor
         cmake.definitions["PATCH_VERSION_NUMBER"] = self._patch
+
+        if self._visual_studio():
+            cmake.definitions["CONAN_MSVC_RUNTIME_LIBRARY"] = convert_runtime_names.convert(
+                    str(self.settings.compiler.runtime) )
+
         cmake.configure()
         return cmake
 
