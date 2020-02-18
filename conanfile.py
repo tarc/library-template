@@ -70,7 +70,7 @@ class LibraryTemplate(ConanFile):
         cmake.install()
 
     def package_info(self):
-        if self.settings.build_type == "Release":
-            self.cpp_info.libs = ["liblibrary-template.a"]
-        else:
-            self.cpp_info.libs = ["liblibrary-template_d.a"]
+        self.cpp_info.libs = tools.collect_libs(self)
+
+        if self.settings.build_type != "Release":
+            self.cpp_info.libs = [ f"{lib}_d" for lib in self.cpp_info.libs]
